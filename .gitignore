@@ -1,3 +1,5 @@
+AmazonRootCA1.pem
+venv
 .env
 .idea
 .DS_Store

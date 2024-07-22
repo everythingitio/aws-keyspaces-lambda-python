@@ -1,4 +1,4 @@
-npm install cdk@1.104.0 -y
+npm install cdk@2.147.1 -y
 python3 -m venv venv/
 source venv/bin/activate
 cwd=$(pwd)
@@ -13,10 +13,10 @@ cd $cwd/lambda/
 cp $cwd/lambda/../AmazonRootCA1.pem $cwd/lambda/AmazonRootCA1.pem #this file needs to be sent
 zip -r9 .dist/lambda.zip * -x ".dist"
 cd $cwd
-npx cdk synth
+cdk synth
 AWS_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
-npx cdk bootstrap aws://${AWS_ACCOUNT}/${AWS_DEFAULT_REGION}
-npx cdk deploy $*
+cdk bootstrap aws://${AWS_ACCOUNT}/${AWS_DEFAULT_REGION}
+cdk deploy 
 cd infrastructure
-./set_secrets.sh $*
+./set_secrets.sh
 deactivate

@@ -47,11 +47,11 @@ class AppStack(_core.Stack):
         cassandra_function = _lambda.Function(self,
                                         'cassandra-demo',
                                         function_name='cassandra-demo',
-                                        runtime=_lambda.Runtime.PYTHON_3_6,
+                                        runtime=_lambda.Runtime.PYTHON_3_8,
                                         memory_size=1024,
                                         code=code,
                                         handler='demo_handler.handler',
-                                        tracing=_lambda.Tracing.ACTIVE,
+                                        #tracing=_lambda.Tracing.ACTIVE, # deactivate if not needed
                                         environment={'CASSANDRA_CREDS': secrets.secret_arn},
                                         )
         secrets.grant_read(cassandra_function)

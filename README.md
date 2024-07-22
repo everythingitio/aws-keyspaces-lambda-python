@@ -22,9 +22,21 @@ curl https://<YOUR_API_ID>.execute-api.eu-west-1.amazonaws.com/prod/countries?co
 To deploy this application into a AWS account you can use the `simple-deploy.sh` script provided. 
 
 ````bash 
-./simple-deploy.sh --profile your_aws_profile
+
+
+deactivate existing python env 
+$ deactivate
+
+removed the profile to use the environment variables
+
+$ export AWS_ACCESS_KEY_ID=xxxx
+$ export AWS_SECRET_ACCESS_KEY=yyyy
+$ export AWS_DEFAULT_REGION=us-east-1
+
+$ ./simple-deploy.sh 
+
 ````
-The profile `your_aws_profile` needs to have enough privilages to deploy the application.
+The profile `your_aws_profile` or aws credential needs to have enough privilages to deploy the application.
 
 ````yml
       Policies:
@@ -45,6 +57,15 @@ The profile `your_aws_profile` needs to have enough privilages to deploy the app
                 Resource:
                 - "*"
 ````
+
+Cleanup
+
+```
+
+$ cdk destroy
+
+
+```
 
 ## License
 

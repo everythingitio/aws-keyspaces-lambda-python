@@ -2,12 +2,14 @@ import boto3
 import os
 import uuid
 import json
-from ssl import SSLContext, PROTOCOL_TLSv1, CERT_REQUIRED
+from ssl import SSLContext, PROTOCOL_TLSv1_2, CERT_REQUIRED
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster, ExecutionProfile, EXEC_PROFILE_DEFAULT, ConsistencyLevel
 
 CASSANDRA_CREDS = os.environ['CASSANDRA_CREDS']
 AWS_DEFAULT_REGION = os.environ['AWS_DEFAULT_REGION']
+
+print(f'CASSANDRA_CREDS {CASSANDRA_CREDS} AWS_DEFAULT_REGION {AWS_DEFAULT_REGION}')
 
 secret_client = boto3.client('secretsmanager')
 secret_response = secret_client.get_secret_value(SecretId=CASSANDRA_CREDS)
@@ -17,7 +19,7 @@ cassandra_user = secret['ServiceSpecificCredential']['ServiceUserName']
 cassandra_password = secret['ServiceSpecificCredential']['ServicePassword']
 auth_provider = PlainTextAuthProvider(username=cassandra_user, password=cassandra_password)
 
-ssl_context = SSLContext(PROTOCOL_TLSv1)
+ssl_context = SSLContext(PROTOCOL_TLSv1_2)
 ssl_context.load_verify_locations('AmazonRootCA1.pem')
 ssl_context.verify_mode = CERT_REQUIRED
 cluster = Cluster(['cassandra.{}.amazonaws.com'.format(AWS_DEFAULT_REGION)], port=9142, ssl_context=ssl_context, auth_provider=auth_provider)
